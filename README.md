@@ -6,6 +6,8 @@
 使用[BGAQRCode-Android][https://github.com/bingoogolapple/BGAQRCode-Android]
 以前都是用 zxing 这次用的 ZBar。
 
+![baidu](http://www.baidu.com/img/bdlogo.gif "百度logo")
+
 ![main]:https://github.com/look0089/scan/blob/master/jpg/main.png
 
 
