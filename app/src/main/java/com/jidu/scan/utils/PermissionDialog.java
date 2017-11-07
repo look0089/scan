@@ -1,6 +1,5 @@
-package com.jidu.scan;
+package com.jidu.scan.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,6 +9,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
+
+import com.jidu.scan.R;
 
 /**
  * Created by Jzs on 2017/11/2 0002.

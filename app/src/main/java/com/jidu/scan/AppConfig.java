@@ -1,5 +1,7 @@
 package com.jidu.scan;
 
+import com.jidu.scan.utils.SharedPreferencesUtil;
+
 /**
  * Created by Jzs on 2017/7/24.
  * 用于存放系统的一些常量参数
@@ -21,7 +23,8 @@ public class AppConfig {
     public static boolean isTest = true;
 
     public static void init() {
-        BASE_URL = isTest ? TEST_URL : RELEASE_URL;
+        String base_url = SharedPreferencesUtil.getString("base_url", "http://192.168.1.131:806/");
+        BASE_URL = base_url;
 //        IS_LOG = isTest ? true : false;
         IS_LOG = true;
     }

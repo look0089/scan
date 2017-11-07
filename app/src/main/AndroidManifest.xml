@@ -24,6 +24,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".order.OrderActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".TestScanActivity"/>
+        <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -33,7 +38,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".TestScanActivity"/>
     </application>
 
 </manifest>

@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.jidu.scan.retorift.BaseEntity;
+import com.jidu.scan.order.OrderEntity;
 import com.jidu.scan.retorift.RequestCallBack;
 import com.jidu.scan.utils.MyDialog;
 
@@ -141,7 +141,7 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
                     @Override
                     public void onSuccess(int code, String msg, Object object) {
                         OrderEntity entity = (OrderEntity) object;
-                        Toast.makeText(TestScanActivity.this, entity.mess, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TestScanActivity.this, entity.mess, Toast.LENGTH_LONG).show();
                     }
 
                     @Override

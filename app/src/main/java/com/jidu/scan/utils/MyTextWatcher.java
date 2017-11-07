@@ -1,4 +1,4 @@
-package com.jidu.scan;
+package com.jidu.scan.utils;
 
 import android.text.Editable;
 import android.text.TextWatcher;

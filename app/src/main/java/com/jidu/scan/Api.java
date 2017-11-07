@@ -1,7 +1,7 @@
 package com.jidu.scan;
 
+import com.jidu.scan.order.OrderEntity;
 import com.jidu.scan.retorift.BaseApi;
-import com.jidu.scan.retorift.BaseEntity;
 import com.jidu.scan.utils.AppHelper;
 
 import java.util.HashMap;

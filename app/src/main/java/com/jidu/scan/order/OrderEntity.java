@@ -1,4 +1,4 @@
-package com.jidu.scan;
+package com.jidu.scan.order;
 
 import com.jidu.scan.retorift.BaseEntity;
 
