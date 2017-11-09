@@ -1,5 +1,6 @@
 package com.jidu.scan;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,8 @@ import com.jidu.scan.order.OrderEntity;
 import com.jidu.scan.retorift.RequestCallBack;
 import com.jidu.scan.utils.MyDialog;
 
+import java.util.ArrayList;
+
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zbar.ZBarView;
 
@@ -19,6 +22,7 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
     private static final String TAG = TestScanActivity.class.getSimpleName();
 
     private QRCodeView mQRCodeView;
+    private ArrayList<String> mBarCodeList = new ArrayList<>();
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +36,9 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
 
         mQRCodeView = (ZBarView) findViewById(R.id.zbarview);
         mQRCodeView.setDelegate(this);
+
+        Intent intent = getIntent();
+        mBarCodeList = intent.getStringArrayListExtra("list");
 
     }
 
@@ -66,6 +73,12 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
     public void onScanQRCodeSuccess(String result) {
 //        Log.i(TAG, "result:" + result);
 //        Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+        if (mBarCodeList.size() > 0) {
+            if (!mBarCodeList.contains(result)) {
+                Toast.makeText(this, "该商品不在列表内", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
 
         MyDialog myDialog = new MyDialog();
         myDialog.showDialog(this, "扫描结果:" + result + "。\n是否入库？");
@@ -135,8 +148,12 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
 
 
     private void check(String result) {
+        String type = "1";
+        if (mBarCodeList.size() > 0) {
+            type = "2";
+        }
         Api.getInstance()
-                .check(result)
+                .check(result, type)
                 .callBack(new RequestCallBack() {
                     @Override
                     public void onSuccess(int code, String msg, Object object) {

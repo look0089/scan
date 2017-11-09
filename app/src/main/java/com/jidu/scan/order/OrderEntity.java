@@ -48,6 +48,8 @@ public class OrderEntity extends BaseEntity {
             public String scan_count;
             public String count;
             public String status_cn;
+            public String barcode;
+            public String meid;
         }
     }
 }

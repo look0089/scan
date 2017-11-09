@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -17,17 +16,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.jidu.scan.Api;
-import com.jidu.scan.AppConfig;
-import com.jidu.scan.databinding.ActivityOrderBinding;
-import com.jidu.scan.utils.MyTextWatcher;
-import com.jidu.scan.utils.PermissionDialog;
 import com.jidu.scan.R;
 import com.jidu.scan.TestScanActivity;
-import com.jidu.scan.databinding.ActivityMainBinding;
+import com.jidu.scan.databinding.ActivityOrderBinding;
 import com.jidu.scan.retorift.RequestCallBack;
-import com.jidu.scan.retorift.RetrofitManager;
-import com.jidu.scan.utils.MyDialog;
-import com.jidu.scan.utils.SharedPreferencesUtil;
+import com.jidu.scan.utils.MyTextWatcher;
+import com.jidu.scan.utils.PermissionDialog;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.tbruyelle.rxpermissions.RxPermissions;
@@ -41,6 +35,7 @@ public class OrderActivity extends AppCompatActivity {
     private OrderAdapter mAdapter;
     private List<OrderEntity.DataEntity.ListEntity> mList = new ArrayList<>();
     private int mPage = 1;
+    private int mType = 1;//首次传1 翻页传2
     private RxPermissions rxPermissions;
     private ActivityOrderBinding mBinding;
 
@@ -50,7 +45,7 @@ public class OrderActivity extends AppCompatActivity {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_order);
         rxPermissions = new RxPermissions(this);
         initView();
-        order("", mPage + "");
+        order("", mPage + "", mType + "");
     }
 
     private void initView() {
@@ -66,44 +61,18 @@ public class OrderActivity extends AppCompatActivity {
                                 Manifest.permission.CAMERA)
                         .subscribe(granted -> {
                             if (granted) { // Always true pre-M
-                                startActivity(new Intent(this, TestScanActivity.class));
+                                ArrayList<String> list = new ArrayList<String>();
+                                for (int i = 0; i < mList.size(); i++) {
+                                    list.add(mList.get(i).barcode);
+                                }
+                                Intent intent = new Intent(this, TestScanActivity.class);
+                                intent.putStringArrayListExtra("list", list);
+                                startActivity(intent);
                             } else {
                                 new PermissionDialog(this).show();
                             }
                         })
         );
-
-        mBinding.setFabOnClick(v -> {
-            MyDialog myDialog = new MyDialog();
-            myDialog.showDialog(this, "请输入要连接的ip地址,并以 “/” 结束");
-            myDialog.showEt();
-            myDialog.setCallBack(new MyDialog.DialogCallBack() {
-                @Override
-                public void handle() {
-                    String etText = myDialog.getEtText();
-                    if (!TextUtils.isEmpty(etText)) {
-                        if (etText.startsWith("https://") || etText.startsWith("http://") && etText.endsWith("/")) {
-                            SharedPreferencesUtil.saveString("base_url", etText);
-                            AppConfig.BASE_URL = etText;
-                            RetrofitManager.baseUrl = etText;
-                            final Snackbar snackbar = Snackbar.make(v, "设置成功", Snackbar.LENGTH_LONG);
-                            snackbar.show();
-                            snackbar.setAction("确定", view -> snackbar.dismiss());
-                        } else {
-                            Toast.makeText(OrderActivity.this, "地址有误，请检查", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                    }
-                }
-
-                @Override
-                public void cancelHandle() {
-
-                }
-            });
-
-
-        });
 
         //设置edittext清空按钮
         mBinding.etOrder.addTextChangedListener(new MyTextWatcher() {
@@ -122,8 +91,9 @@ public class OrderActivity extends AppCompatActivity {
                 String order = mBinding.etOrder.getText().toString().trim();
                 if (!TextUtils.isEmpty(order)) {
                     mPage = 1;
+                    mType = 1;
                     mList.clear();
-                    order(order, mPage + "");
+                    order(order, mPage + "", mType + "");
                     hideSoftInput(textView.getWindowToken());
                 } else {
                     Toast.makeText(this, "请输入订单号", Toast.LENGTH_SHORT).show();
@@ -135,6 +105,9 @@ public class OrderActivity extends AppCompatActivity {
         mBinding.refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
+                mType = 2;
+                mPage++;
+                order(mBinding.etOrder.getText().toString().toString(), mPage + "", mType + "");
                 refreshlayout.finishLoadmore();
             }
 
@@ -142,7 +115,7 @@ public class OrderActivity extends AppCompatActivity {
             public void onRefresh(RefreshLayout refreshlayout) {
                 mPage = 1;
                 mList.clear();
-                order(mBinding.etOrder.getText().toString().toString(), mPage + "");
+                order(mBinding.etOrder.getText().toString().toString(), mPage + "", mType + "");
                 refreshlayout.finishRefresh();
             }
         });
@@ -151,11 +124,12 @@ public class OrderActivity extends AppCompatActivity {
 
             @Override
             public void onBind(SuperViewHolder holder, int viewType, int layoutPosition, OrderEntity.DataEntity.ListEntity item) {
-                holder.setText(R.id.tv_order_no, "订单号：" + item.order_no);
-                holder.setText(R.id.tv_count, "部件数：" + item.count);
-                holder.setText(R.id.tv_order_time, "订单时间：" + item.order_time);
-                holder.setText(R.id.tv_scan_count, "已扫次数：" + item.scan_count);
-                holder.setText(R.id.tv_status, "状态：" + item.status_cn);
+//                holder.setText(R.id.tv_order_no, "订单号：" + item.order_no);
+//                holder.setText(R.id.tv_count, "部件数：" + item.count);
+//                holder.setText(R.id.tv_order_time, "订单时间：" + item.order_time);
+//                holder.setText(R.id.tv_scan_count, "已扫次数：" + item.scan_count);
+//                holder.setText(R.id.tv_status, "状态：" + item.status_cn);
+                holder.setText(R.id.tv_bar_code, "编号：" + item.barcode);
             }
         };
         mBinding.rvMain.setAdapter(mAdapter);
@@ -169,9 +143,9 @@ public class OrderActivity extends AppCompatActivity {
         }
     }
 
-    private void order(String order_on, String page) {
+    private void order(String order_on, String page, String type) {
         Api.getInstance()
-                .order(order_on, page)
+                .order(order_on, page, type)
                 .callBack(new RequestCallBack() {
                     @Override
                     public void onSuccess(int code, String msg, Object object) {

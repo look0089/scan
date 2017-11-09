@@ -12,9 +12,6 @@
             name="openScan"
             type="OnClickListener"/>
 
-        <variable
-            name="fabOnClick"
-            type="OnClickListener"/>
 
         <variable
             name="cleanText"
@@ -56,6 +53,7 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:hint="请输入订单号"
+                    android:text="JS20170427013"
                     android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:maxLines="1"
@@ -125,18 +123,6 @@
                 android:layout_height="wrap_content"/>
 
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_set"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_margin="30dp"
-            android:onClick="@{fabOnClick}"
-            android:src="@mipmap/icon_setting"
-            app:elevation="6dp"
-            app:fabSize="normal"/>
     </RelativeLayout>
 
 </layout>
