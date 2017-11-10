@@ -22,7 +22,8 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
     private static final String TAG = TestScanActivity.class.getSimpleName();
 
     private QRCodeView mQRCodeView;
-    private ArrayList<String> mBarCodeList = new ArrayList<>();
+    //    private ArrayList<String> mBarCodeList = new ArrayList<>();
+    private String mType = "1";
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +39,8 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
         mQRCodeView.setDelegate(this);
 
         Intent intent = getIntent();
-        mBarCodeList = intent.getStringArrayListExtra("list");
+//        mBarCodeList = intent.getStringArrayListExtra("list");
+        mType = intent.getStringExtra("type");
 
     }
 
@@ -48,8 +50,8 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
         mQRCodeView.startCamera();
 //        mQRCodeView.startCamera(Camera.CameraInfo.CAMERA_FACING_FRONT);
         mQRCodeView.showScanRect();
-        mQRCodeView.startSpot();
         mQRCodeView.changeToScanBarcodeStyle();
+        mQRCodeView.startSpot();
     }
 
     @Override
@@ -73,12 +75,13 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
     public void onScanQRCodeSuccess(String result) {
 //        Log.i(TAG, "result:" + result);
 //        Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
-        if (mBarCodeList.size() > 0) {
-            if (!mBarCodeList.contains(result)) {
-                Toast.makeText(this, "该商品不在列表内", Toast.LENGTH_SHORT).show();
-                return;
-            }
-        }
+//        if (mBarCodeList.size() > 0) {
+//            if (!mBarCodeList.contains(result)) {
+//                Toast.makeText(this, "该商品不在列表内", Toast.LENGTH_SHORT).show();
+//                mQRCodeView.startSpot();
+//                return;
+//            }
+//        }
 
         MyDialog myDialog = new MyDialog();
         myDialog.showDialog(this, "扫描结果:" + result + "。\n是否入库？");
@@ -148,12 +151,12 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
 
 
     private void check(String result) {
-        String type = "1";
-        if (mBarCodeList.size() > 0) {
-            type = "2";
-        }
+//        String type = "1";
+//        if (mBarCodeList.size() > 0) {
+//            type = "2";
+//        }
         Api.getInstance()
-                .check(result, type)
+                .check(result, mType)
                 .callBack(new RequestCallBack() {
                     @Override
                     public void onSuccess(int code, String msg, Object object) {

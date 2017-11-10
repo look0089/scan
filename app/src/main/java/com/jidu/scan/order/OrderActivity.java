@@ -66,7 +66,8 @@ public class OrderActivity extends AppCompatActivity {
                                     list.add(mList.get(i).barcode);
                                 }
                                 Intent intent = new Intent(this, TestScanActivity.class);
-                                intent.putStringArrayListExtra("list", list);
+                                intent.putExtra("type", "2");
+//                                intent.putStringArrayListExtra("list", list);
                                 startActivity(intent);
                             } else {
                                 new PermissionDialog(this).show();

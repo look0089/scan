@@ -40,7 +40,9 @@ public class MainActivity extends AppCompatActivity {
                                 Manifest.permission.CAMERA)
                         .subscribe(granted -> {
                             if (granted) { // Always true pre-M
-                                startActivity(new Intent(this, TestScanActivity.class));
+                                Intent intent = new Intent(this, TestScanActivity.class);
+                                intent.putExtra("type", "1");
+                                startActivity(intent);
                             } else {
                                 new PermissionDialog(this).show();
                             }
