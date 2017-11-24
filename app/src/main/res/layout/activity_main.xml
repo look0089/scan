@@ -20,6 +20,10 @@
             name="setClick"
             type="OnClickListener"/>
 
+        <variable
+            name="onPlay"
+            type="OnClickListener"/>
+
     </data>
 
     <LinearLayout
@@ -132,8 +136,9 @@
                 android:layout_weight="1"
                 android:background="@drawable/selector_btn_orange"
                 android:gravity="center"
+                android:onClick="@{onPlay}"
                 android:orientation="vertical"
-                android:visibility="invisible">
+                android:visibility="visible">
 
 
                 <ImageView
@@ -146,7 +151,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="扫描"
+                    android:text="播放"
                     android:textColor="@color/white"
                     android:textSize="18sp"/>
 

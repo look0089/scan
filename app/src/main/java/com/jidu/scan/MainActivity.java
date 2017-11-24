@@ -4,6 +4,7 @@ package com.jidu.scan;
 import android.Manifest;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import com.tbruyelle.rxpermissions.RxPermissions;
 public class MainActivity extends AppCompatActivity {
     private RxPermissions rxPermissions;
     private ActivityMainBinding mBinding;
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
 
         mBinding.setOrderClick(v -> startActivity(new Intent(this, OrderActivity.class)));
+
+        mBinding.setOnPlay(v -> playWav());
 
         mBinding.setOpenScan(v ->
                 rxPermissions
@@ -83,4 +87,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void playWav() {
+        try {
+            mediaPlayer = MediaPlayer.create(this, R.raw.success);
+            mediaPlayer.start();//开始播放
+            mediaPlayer.setOnCompletionListener(arg0 -> mediaPlayer.release());
+//            mediaPlayer.prepare();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

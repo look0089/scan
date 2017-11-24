@@ -1,6 +1,7 @@
 package com.jidu.scan;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import com.jidu.scan.order.OrderEntity;
 import com.jidu.scan.retorift.RequestCallBack;
 import com.jidu.scan.utils.MyDialog;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import cn.bingoogolapple.qrcode.core.QRCodeView;
@@ -24,6 +26,7 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
     private QRCodeView mQRCodeView;
     //    private ArrayList<String> mBarCodeList = new ArrayList<>();
     private String mType = "1";
+    private MediaPlayer mediaPlayer;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,6 +165,12 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
                     public void onSuccess(int code, String msg, Object object) {
                         OrderEntity entity = (OrderEntity) object;
                         Toast.makeText(TestScanActivity.this, entity.mess, Toast.LENGTH_LONG).show();
+                        /**
+                         * 0：入库成功
+                         2：订单库无此订单
+                         3：非本订单部件
+                         */
+                        playWav(entity.code);
                     }
 
                     @Override
@@ -169,5 +178,40 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
 
                     }
                 }).post();
+    }
+
+    public void playWav(int code) {
+        try {
+            switch (code) {
+                case 0:
+                    mediaPlayer = MediaPlayer.create(this, R.raw.success);
+                    break;
+                case 2:
+                    mediaPlayer = MediaPlayer.create(this, R.raw.none);
+                    break;
+                case 3:
+                    mediaPlayer = MediaPlayer.create(this, R.raw.nothis);
+                    break;
+                default:
+
+                    break;
+            }
+            mediaPlayer.start();//开始播放
+            mediaPlayer.setOnCompletionListener(arg0 -> mediaPlayer.release());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //读取assets中的文件
+    private void readFromAssets() {
+        try {
+            MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.success);
+            mediaPlayer.prepare();
+//            InputStream is = getAssets().open("city.txt");//此处为要加载的json文件名称
+            //            handleCitiesResponse(text);
+        } catch (Exception e) {
+            Log.d("readFromAssets", e.toString());
+        }
     }
 }
