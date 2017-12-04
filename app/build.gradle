@@ -10,6 +10,10 @@ android {
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
+        ndk {
+            //APP的build.gradle设置支持的SO库架构
+            abiFilters 'armeabi'
+        }
     }
 
     //使用databing

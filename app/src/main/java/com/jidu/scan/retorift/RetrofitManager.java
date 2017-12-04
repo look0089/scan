@@ -115,8 +115,8 @@ public class RetrofitManager {
                         String response = null;
                         try {
                             response = entity.string();
-                            Object object = gson.fromJson(response, aClass);
-                            mCallback.onSuccess(200, "请求成功", object);
+                            BaseEntity object = (BaseEntity) gson.fromJson(response, aClass);
+                            mCallback.onSuccess(object.code, object.mess, object);
                         } catch (Exception e) {
                             e.printStackTrace();
                             AppLog.e("解析失败，entity：" + response);
@@ -127,7 +127,7 @@ public class RetrofitManager {
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
-
+                        mCallback.onFailure(500, "请求失败", null);
                     }
                 });
     }

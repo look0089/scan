@@ -30,6 +30,7 @@ public class AppConfig {
     }
 
 
+    public static final String APICHECK = "api/check";
     public static final String CHECK = "api/code/check_code";
     public static final String ORDER = "api/order/list";
 }

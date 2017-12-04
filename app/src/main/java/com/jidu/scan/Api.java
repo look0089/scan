@@ -22,6 +22,11 @@ public class Api extends BaseApi {
         return instance;
     }
 
+    public Api apiCheck() {
+        setConfig(AppConfig.APICHECK, new HashMap<>(), OrderEntity.class);
+        return this;
+    }
+
     /**
      * @param code
      * @param type 1全库扫码，2固定查询结果扫码
@@ -30,7 +35,7 @@ public class Api extends BaseApi {
     public Api check(String code, String type) {
         Map<String, String> maps = new HashMap<>();
         maps.put("code", code);
-        maps.put("meid", AppHelper.getIMEI(MyApplaciton.getInstance()));
+        maps.put("meid", AppHelper.getMEID(MyApplaciton.getInstance()));
         maps.put("type", type);
         setConfig(AppConfig.CHECK, maps, OrderEntity.class);
         return this;

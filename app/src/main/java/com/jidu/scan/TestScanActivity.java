@@ -1,6 +1,8 @@
 package com.jidu.scan;
 
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -27,6 +29,7 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
     //    private ArrayList<String> mBarCodeList = new ArrayList<>();
     private String mType = "1";
     private MediaPlayer mediaPlayer;
+    private AudioManager mAudioManager;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +48,7 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
 //        mBarCodeList = intent.getStringArrayListExtra("list");
         mType = intent.getStringExtra("type");
 
+        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
     }
 
     @Override
@@ -181,6 +185,11 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
     }
 
     public void playWav(int code) {
+        //当前音量
+        int currentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        //最大音量
+        int maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume, 0); //tempVolume:音量绝对值
         try {
             switch (code) {
                 case 0:
@@ -197,21 +206,18 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
                     break;
             }
             mediaPlayer.start();//开始播放
-            mediaPlayer.setOnCompletionListener(arg0 -> mediaPlayer.release());
+            mediaPlayer.setOnCompletionListener(arg0 -> {
+                mediaPlayer.release();
+                mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, 0); //tempVolume:音量绝对值
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    //读取assets中的文件
-    private void readFromAssets() {
-        try {
-            MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.success);
-            mediaPlayer.prepare();
-//            InputStream is = getAssets().open("city.txt");//此处为要加载的json文件名称
-            //            handleCitiesResponse(text);
-        } catch (Exception e) {
-            Log.d("readFromAssets", e.toString());
-        }
+
+    private void setVolume() {
+
+
     }
 }

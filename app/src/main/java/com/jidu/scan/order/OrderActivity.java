@@ -55,24 +55,26 @@ public class OrderActivity extends AppCompatActivity {
             hideSoftInput(v.getWindowToken());
         });
 
+        mBinding.setOnClose(v -> finish());
+
         mBinding.setOpenScan(v ->
-                rxPermissions
-                        .request(Manifest.permission.READ_PHONE_STATE,
-                                Manifest.permission.CAMERA)
-                        .subscribe(granted -> {
-                            if (granted) { // Always true pre-M
-                                ArrayList<String> list = new ArrayList<String>();
-                                for (int i = 0; i < mList.size(); i++) {
-                                    list.add(mList.get(i).barcode);
-                                }
-                                Intent intent = new Intent(this, TestScanActivity.class);
-                                intent.putExtra("type", "2");
+                        rxPermissions
+                                .request(Manifest.permission.READ_PHONE_STATE,
+                                        Manifest.permission.CAMERA)
+                                .subscribe(granted -> {
+                                    if (granted) { // Always true pre-M
+                                        ArrayList<String> list = new ArrayList<String>();
+                                        for (int i = 0; i < mList.size(); i++) {
+                                            list.add(mList.get(i).barcode);
+                                        }
+                                        Intent intent = new Intent(this, TestScanActivity.class);
+                                        intent.putExtra("type", "2");
 //                                intent.putStringArrayListExtra("list", list);
-                                startActivity(intent);
-                            } else {
-                                new PermissionDialog(this).show();
-                            }
-                        })
+                                        startActivity(intent);
+                                    } else {
+                                        new PermissionDialog(this).show();
+                                    }
+                                })
         );
 
         //设置edittext清空按钮
