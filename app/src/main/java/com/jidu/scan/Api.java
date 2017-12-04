@@ -44,7 +44,7 @@ public class Api extends BaseApi {
     public Api order(String order_no, String page, String type) {
         Map<String, String> maps = new HashMap<>();
         maps.put("order_no", order_no);
-        maps.put("meid", AppHelper.getIMEI(MyApplaciton.getInstance()));
+        maps.put("meid", AppHelper.getMEID(MyApplaciton.getInstance()));
         maps.put("page", page);
         maps.put("type", type);
         setConfig(AppConfig.ORDER, maps, OrderEntity.class);
