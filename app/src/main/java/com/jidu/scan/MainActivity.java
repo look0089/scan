@@ -6,16 +6,19 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.jidu.scan.databinding.ActivityMainBinding;
 import com.jidu.scan.order.OrderActivity;
 import com.jidu.scan.retorift.RequestCallBack;
 import com.jidu.scan.retorift.RetrofitManager;
+import com.jidu.scan.utils.AppHelper;
 import com.jidu.scan.utils.MyDialog;
 import com.jidu.scan.utils.PermissionDialog;
 import com.jidu.scan.utils.SharedPreferencesUtil;
@@ -37,6 +40,11 @@ public class MainActivity extends AppCompatActivity {
 
         initView();
         apiCheck();
+
+        Log.e("sk", "getMEID1: " + AppHelper.getMEID1(MyApplaciton.getInstance()));
+        Log.e("sk", "getMEID2: " + AppHelper.getMEID2(MyApplaciton.getInstance()));
+        String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        Log.e("sk", "getMEID2: " + androidId);
     }
 
     private void initView() {

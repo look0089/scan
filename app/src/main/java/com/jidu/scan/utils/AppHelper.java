@@ -1,6 +1,7 @@
 package com.jidu.scan.utils;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
@@ -10,6 +11,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Environment;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -465,4 +467,17 @@ public final class AppHelper {
         TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         return manager.getDeviceId();
     }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    public static String getMEID1(Context context) {
+        TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        return manager.getDeviceId(TelephonyManager.PHONE_TYPE_CDMA);
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    public static String getMEID2(Context context) {
+        TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        return manager.getDeviceId(TelephonyManager.PHONE_TYPE_GSM);
+    }
+
 }
