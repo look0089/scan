@@ -41,10 +41,10 @@ public class MainActivity extends AppCompatActivity {
         initView();
         apiCheck();
 
-        Log.e("sk", "getMEID1: " + AppHelper.getMEID1(MyApplaciton.getInstance()));
-        Log.e("sk", "getMEID2: " + AppHelper.getMEID2(MyApplaciton.getInstance()));
-        String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        Log.e("sk", "getMEID2: " + androidId);
+        //Log.e("sk", "getMEID1: " + AppHelper.getMEID1(MyApplaciton.getInstance()));
+        //Log.e("sk", "getMEID2: " + AppHelper.getMEID2(MyApplaciton.getInstance()));
+        //String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        //Log.e("sk", "getMEID2: " + androidId);
     }
 
     private void initView() {
